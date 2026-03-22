@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Serioplast Ütemterv</title>
+    <title>Ütemterv - Serioplast Cloud</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -11,65 +11,66 @@
             --green: #28a745;
             --orange: #fd7e14;
             --red: #dc3545;
+            --blue-light: #0dcaf0;
         }
 
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg-color); display: flex; height: 100vh; overflow: hidden; }
 
-        /* Sidebar - Pontosan mint a képeden */
-        nav { width: 220px; background: var(--serio-blue); color: white; padding: 20px; flex-shrink: 0; }
-        .nav-logo { font-size: 18px; font-weight: bold; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
+        /* --- SIDEBAR (FIX) --- */
+        nav { width: 240px; background: var(--serio-blue); color: white; padding: 20px; flex-shrink: 0; }
+        .nav-logo { font-size: 20px; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px; margin-bottom: 20px; }
         .nav-menu { list-style: none; padding: 0; }
-        .nav-menu li { padding: 12px; cursor: pointer; border-radius: 5px; font-size: 14px; display: flex; align-items: center; gap: 10px; }
-        .nav-menu li.active { background: rgba(255,255,255,0.2); font-weight: bold; }
+        .nav-menu li { padding: 12px; cursor: pointer; border-radius: 5px; transition: 0.2s; font-size: 14px; }
+        .nav-menu li:hover { background: rgba(255,255,255,0.1); }
+        .nav-menu li i { margin-right: 10px; width: 20px; text-align: center; }
 
-        /* Fő tartalom */
-        main { flex: 1; padding: 20px; overflow-y: auto; }
+        /* --- FŐ TARTALOM --- */
+        main { flex: 1; padding: 25px; overflow-y: auto; }
 
-        /* Felső vezérlők */
-        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .btn-group button { border: none; padding: 8px 15px; border-radius: 6px; color: white; font-weight: bold; cursor: pointer; margin-left: 5px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .btn-group button { border: none; padding: 10px 18px; border-radius: 6px; color: white; font-weight: bold; cursor: pointer; margin-left: 8px; }
 
-        /* Kompakt Statisztika - A javítás! */
-        .stats-bar { 
-            display: grid; 
-            grid-template-columns: repeat(5, 1fr); 
-            background: white; 
-            padding: 10px; 
-            border-radius: 8px; 
-            margin-bottom: 20px; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            max-width: 1000px; /* Ne nyúljon el végtelenig */
-        }
-        .stat-box { border-right: 1px solid #eee; padding: 5px 15px; text-align: left; }
+        /* Statisztika */
+        .stats-bar { display: flex; background: white; padding: 15px; border-radius: 10px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .stat-box { flex: 1; border-right: 1px solid #eee; padding: 0 15px; }
         .stat-box:last-child { border-right: none; }
-        .stat-val { font-size: 22px; font-weight: bold; display: block; line-height: 1; }
-        .stat-lbl { font-size: 10px; color: #888; text-transform: uppercase; }
+        .stat-val { font-size: 26px; font-weight: bold; display: block; }
+        .stat-lbl { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Kártyák listája */
-        .task-list { display: flex; flex-direction: column; gap: 8px; }
+        /* Kártyák */
+        .task-container { display: flex; flex-direction: column; gap: 12px; }
         .card { 
-            background: white; border-radius: 6px; padding: 12px 20px; 
+            background: white; border-radius: 8px; padding: 18px; 
             display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            border-left: 5px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            border-left: 6px solid #ccc;
+            transition: 0.2s;
         }
-        .card.ZÖLD { border-left-color: var(--green); }
-        .card.PIROS { border-left-color: var(--red); }
-        .card.KÉK { border-left-color: var(--serio-blue); }
+        .card:hover { transform: translateX(5px); }
 
-        .card-id { font-weight: bold; color: var(--serio-blue); font-size: 14px; margin-right: 10px; }
-        .badge { padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; color: white; margin-right: 10px; }
+        .border-ZÖLD { border-left-color: var(--green); }
+        .border-PIROS { border-left-color: var(--red); }
+        .border-KÉK { border-left-color: var(--serio-blue); }
+
+        .card-main { flex: 1; }
+        .card-title { font-weight: bold; color: var(--serio-blue); font-size: 16px; margin-bottom: 5px; display: block; text-decoration: none; }
+        .card-info { font-size: 13px; color: #444; }
+        .badge { padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; color: white; margin-right: 8px; }
+
+        .right-side { display: flex; align-items: center; gap: 15px; }
+        .btn-status { border: 1px solid #ddd; background: #fff; padding: 6px 12px; border-radius: 5px; font-size: 12px; cursor: pointer; font-weight: bold; }
+        .btn-status.completed { color: var(--green); border-color: var(--green); background: #f0fff4; }
         
-        .loader { color: var(--serio-blue); font-size: 12px; margin-bottom: 10px; display: none; }
+        #loadingMsg { text-align: center; color: var(--serio-blue); font-weight: bold; margin-bottom: 10px; display: none; }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="nav-logo"><i class="fa fa-cog"></i> SERIOPLAST</div>
+        <div class="nav-logo">⚙️ SERIOPLAST</div>
         <ul class="nav-menu">
             <li><i class="fa fa-th-large"></i> Dashboard</li>
-            <li class="active"><i class="fa fa-calendar-check"></i> Ütemterv</li>
+            <li style="background: rgba(255,255,255,0.2); font-weight: bold;"><i class="fa fa-calendar-check"></i> Ütemterv</li>
             <li><i class="fa fa-industry"></i> Termelés</li>
             <li><i class="fa fa-vial"></i> Quality</li>
             <li><i class="fa fa-file-excel"></i> Jelentések</li>
@@ -77,8 +78,8 @@
     </nav>
 
     <main>
-        <div class="top-header">
-            <h2 id="monthTitle">2026. Március</h2>
+        <div class="header">
+            <h2>2026. Március (Cloud)</h2>
             <div class="btn-group">
                 <button style="background: var(--green);" onclick="promptNewTask()">+ Új feladat</button>
                 <button style="background: var(--orange);" onclick="loadTasks()">Frissítés</button>
@@ -86,60 +87,95 @@
             </div>
         </div>
 
-        <div id="loader" class="loader"><i class="fa fa-spinner fa-spin"></i> Kapcsolódás a táblázathoz...</div>
+        <div id="loadingMsg">Szinkronizálás a Google Sheets-szel...</div>
 
         <div class="stats-bar">
             <div class="stat-box"><span class="stat-val" style="color:blue" id="totalCount">0</span><span class="stat-lbl">Összes</span></div>
             <div class="stat-box"><span class="stat-val" style="color:green" id="doneCount">0</span><span class="stat-lbl">Kész</span></div>
             <div class="stat-box"><span class="stat-val" style="color:orange" id="pendingCount">0</span><span class="stat-lbl">Nyitott</span></div>
-            <div class="stat-box"><span class="stat-val" style="color:red">0</span><span class="stat-lbl">Hiba</span></div>
-            <div class="stat-box"><span class="stat-val" id="percent">0%</span><span class="stat-lbl">Teljesítés</span></div>
+            <div class="stat-box"><span class="stat-val">Online</span><span class="stat-lbl">Adatbázis</span></div>
         </div>
 
-        <div id="taskList" class="task-list">
-            </div>
+        <div id="taskList" class="task-container"></div>
     </main>
 
     <script>
-        // IDE MÁSOLD A GOOGLE SCRIPT LINKET!
+        // --- 1. IDE ILLESZD BE A GOOGLE LINKET ---
         const SCRIPT_URL = "IDE_MÁSOLD_BE_A_LINKET";
 
         window.onload = loadTasks;
 
+        function promptNewTask() {
+            const gep = prompt("Gép azonosító (pl. WC0535):");
+            if (!gep) return;
+            const feladat = prompt("Feladat leírása:");
+            const tipus = prompt("Típus (ÁTSZ, JAV, HAVI):", "JAV");
+            const szin = prompt("Színkód (ZÖLD, PIROS, KÉK):", "ZÖLD");
+
+            const newTask = {
+                id: Date.now(),
+                gep: gep,
+                desc: feladat,
+                type: tipus,
+                color: szin.toUpperCase(),
+                status: 'NYITOTT'
+            };
+
+            saveTask(newTask);
+        }
+
+        // ADAT MENTÉSE A GOOGLE SHEETS-BE
+        function saveTask(task) {
+            document.getElementById('loadingMsg').style.display = "block";
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                cache: 'no-cache',
+                body: JSON.stringify(task)
+            }).then(() => {
+                setTimeout(loadTasks, 1500); // Várunk egy kicsit, hogy a Google beírja
+            });
+        }
+
+        // ADATOK BETÖLTÉSE A TÁBLÁZATBÓL
         function loadTasks() {
-            document.getElementById('loader').style.display = "block";
+            document.getElementById('loadingMsg').style.display = "block";
             fetch(SCRIPT_URL)
                 .then(res => res.json())
                 .then(data => {
                     renderTasks(data);
-                    document.getElementById('loader').style.display = "none";
+                    document.getElementById('loadingMsg').style.display = "none";
                 })
-                .catch(() => document.getElementById('loader').innerText = "Hiba a betöltéskor!");
+                .catch(err => {
+                    console.log("Hiba a betöltésnél. Lehet, hogy még üres a táblázat?");
+                    document.getElementById('loadingMsg').style.display = "none";
+                });
         }
 
         function renderTasks(tasks) {
             const container = document.getElementById('taskList');
             container.innerHTML = "";
             
-            const total = tasks.length;
-            const done = tasks.filter(t => t.status === 'KÉSZ').length;
-            
-            document.getElementById('totalCount').innerText = total;
-            document.getElementById('doneCount').innerText = done;
-            document.getElementById('pendingCount').innerText = total - done;
-            document.getElementById('percent').innerText = total > 0 ? Math.round((done/total)*100) + "%" : "0%";
+            // Statisztika frissítése
+            document.getElementById('totalCount').innerText = tasks.length;
+            document.getElementById('doneCount').innerText = tasks.filter(t => t.status === 'KÉSZ').length;
+            document.getElementById('pendingCount').innerText = tasks.filter(t => t.status === 'NYITOTT').length;
 
             tasks.forEach(task => {
                 const card = document.createElement('div');
-                card.className = `card ${task.color}`;
+                card.className = `card border-${task.color}`;
+                
                 card.innerHTML = `
-                    <div style="display:flex; align-items:center;">
-                        <span class="card-id">${task.gep}</span>
-                        <span class="badge" style="background:var(--${task.color === 'PIROS' ? 'red' : (task.color === 'ZÖLD' ? 'green' : 'serio-blue')})">${task.type}</span>
-                        <span style="font-size:13px;">${task.desc}</span>
+                    <div class="card-main">
+                        <span class="card-title">${task.gep}</span>
+                        <div class="card-info">
+                            <span class="badge" style="background:var(--${getColorHex(task.color)})">${task.type}</span>
+                            ${task.desc}
+                        </div>
                     </div>
-                    <div>
-                        <button onclick="updateStatus('${task.id}')" style="cursor:pointer; border:1px solid #ddd; background:white; border-radius:4px; font-size:11px; padding:4px 8px;">
+                    <div class="right-side">
+                        <span style="font-size: 11px; color: #888;">Live</span>
+                        <button class="btn-status ${task.status === 'KÉSZ' ? 'completed' : ''}">
                             ${task.status === 'KÉSZ' ? '✔ KÉSZ' : 'NYITOTT'}
                         </button>
                     </div>
@@ -148,17 +184,10 @@
             });
         }
 
-        function promptNewTask() {
-            const gep = prompt("Gép:");
-            const desc = prompt("Feladat:");
-            const szin = prompt("Szín (ZÖLD/PIROS/KÉK):", "ZÖLD");
-            if(!gep || !desc) return;
-
-            const task = { id: Date.now(), gep, desc, type: "JAV", color: szin.toUpperCase(), status: "NYITOTT" };
-            
-            document.getElementById('loader').style.display = "block";
-            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(task) })
-            .then(() => setTimeout(loadTasks, 2000));
+        function getColorHex(colorName) {
+            if (colorName === 'ZÖLD') return 'green';
+            if (colorName === 'PIROS') return 'red';
+            return 'serio-blue';
         }
     </script>
 </body>
